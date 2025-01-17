@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Simple Text Logger",
+  "version": "1.0",
+  "description": "Log selected text to the console via context menu.",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "storage",
+    "tabs",
+    "webRequest",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    "indexeddb.js"
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "Simple Text Logger"
+  }
+}
