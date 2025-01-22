@@ -129,4 +129,13 @@ dist
 .yarn/install-state.gz
 .pnp.* 
 
-.env
+.env 
+pdf.js/*~
+pdf.js/local.mk
+pdf.js/build/
+pdf.js/tags
+pdf.js/.DS_Store
+pdf.js/Makefile
+pdf.js/node_modules/
+pdf.js/examples/node/svgdump/
+pdf.js/examples/node/pdf2png/*.png
