@@ -2,6 +2,14 @@
 
 PaperAid is a chrome extension which helps you to read and understand scientific papers (or any other pdf documents) by parsing them, extracting definitions from them and later displaying them as tooltips over previously defined words / phrases. It is built on top of [PDF.js](https://mozilla.github.io/pdf.js/) - community driven pdf-reader supported by Mozilla.
 
+## Architecture 
+
+The project is built using Vanilla JavaScript and Python with the Flask framework. It's built on top of PDF.js. 
+
+### Why build an extension of an extension? 
+The answer is very simple - both chrome and firefox block the possibility to interact and manipulate with the DOM when user is reading a pdf document - and this is made on purpose - see this [thread](https://bugzilla.mozilla.org/show_bug.cgi?id=1454760). The only sensible option to overcome this that I've encountered is just extending the pdf reader itself. 
+
+### High level scheme of the app
 
 
 

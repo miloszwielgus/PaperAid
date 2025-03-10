@@ -6,17 +6,13 @@ import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-# Load environment variables
 load_dotenv()
 
-# Initialize Flask app
 app = Flask(__name__)
 
-# Read configuration from environment variables
 PORT = int(os.getenv("PORT", 3000))
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-# Initialize Groq client
 groq_client = Groq(api_key=GROQ_API_KEY)
 
 class Entry(BaseModel):
@@ -26,7 +22,6 @@ class Entry(BaseModel):
 class Definitions(BaseModel):
     definitions: list[Entry]
 
-# Function to call the Groq API for a single chunk of text
 def get_groq_chat_completion(text, memory_definitions=None):
     response = groq_client.chat.completions.create(
         messages=[
@@ -57,19 +52,15 @@ def get_groq_chat_completion(text, memory_definitions=None):
         return extracted_definitions.get("definitions", [])
     return []
 
-# Function to split text into semantic chunks
 def split_text_into_chunks(text):
-    # Initialize the text splitter for plain text
     plain_text_splitter = CharacterTextSplitter(
-        chunk_size=10000,  # Number of characters per chunk
-        chunk_overlap=50   # Overlap to preserve context
+        chunk_size=10000,  
+        chunk_overlap=50   
     )
     
-    # Split the text into chunks
     chunks = plain_text_splitter.split_text(text)
     return chunks
 
-# POST endpoint to handle definition extraction
 @app.route("/definitions", methods=["POST"])
 def definitions():
     data = request.get_json()
@@ -79,10 +70,8 @@ def definitions():
     text = data["text"]
 
     try:
-        # Split text into chunks
         chunks = split_text_into_chunks(text)
 
-        # Send each chunk to the Groq API and collect definitions
         current_definitions = []
         for chunk in chunks:
             new_definitions = get_groq_chat_completion(chunk, memory_definitions=current_definitions)
@@ -92,6 +81,5 @@ def definitions():
         app.logger.error(f"Error processing text: {str(e)}")
         return jsonify({"error": "Failed to process text and extract definitions."}), 500
 
-# Start the server
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=PORT)
